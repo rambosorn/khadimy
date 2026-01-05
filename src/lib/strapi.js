@@ -1,5 +1,6 @@
-export const STRAPI_URL =
-    import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
+export const STRAPI_URL = (import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337')
+    .replace(/\/admin\/?$/, "") // Remove /admin or /admin/ if user pasted full admin URL
+    .replace(/\/$/, "");        // Remove trailing slash if present
 
 /* -----------------------------------------
    Helper: Build query string for Strapi v4
