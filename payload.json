@@ -1,0 +1,9 @@
+{
+    "data": {
+        "name": "Test User",
+        "email": "test@example.com",
+        "phone": "123456789",
+        "interest": "Test Course",
+        "background": "Test Background"
+    }
+}
