@@ -6,7 +6,9 @@ export default [
         "http://localhost:5173",
         "http://localhost:5174",
         "http://127.0.0.1:5173",
-        "https://dashing-longma-925d05.netlify.app"
+        "https://dashing-longma-925d05.netlify.app",
+        "https://khadimy.com",
+        "https://www.khadimy.com"
       ],
       methods: ["GET", "POST", "PUT", "DELETE"],
       headers: ["Content-Type", "Authorization"],
