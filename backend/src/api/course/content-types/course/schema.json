@@ -1,0 +1,70 @@
+{
+    "kind": "collectionType",
+    "collectionName": "courses",
+    "info": {
+        "singularName": "course",
+        "pluralName": "courses",
+        "displayName": "Course",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "overview": {
+            "type": "text"
+        },
+        "mode": {
+            "type": "string"
+        },
+        "duration": {
+            "type": "string"
+        },
+        "slug": {
+            "type": "uid",
+            "targetField": "title"
+        },
+        "featured": {
+            "type": "boolean",
+            "default": false
+        },
+        "is_slideshow": {
+            "type": "boolean",
+            "default": false
+        },
+        "outcomes": {
+            "type": "json"
+        },
+        "tools": {
+            "type": "json"
+        },
+        "instructor": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::expert.expert"
+        },
+        "who_is_for": {
+            "type": "json"
+        },
+        "schedule": {
+            "type": "text"
+        },
+        "price": {
+            "type": "string",
+            "default": "Free"
+        },
+        "cover": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        }
+    }
+}

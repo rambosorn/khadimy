@@ -1,0 +1,73 @@
+{
+    "kind": "singleType",
+    "collectionName": "home_heroes",
+    "info": {
+        "singularName": "home-hero",
+        "pluralName": "home-heroes",
+        "displayName": "Home Hero",
+        "description": "Content for the Homepage Hero Section"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "cohort_text": {
+            "type": "string",
+            "default": "🚀 New Cohorts Starting January 2026"
+        },
+        "title_main": {
+            "type": "string",
+            "default": "From knowledge to"
+        },
+        "title_highlight": {
+            "type": "string",
+            "default": "Real-World Skills"
+        },
+        "description": {
+            "type": "text",
+            "default": "Khadimy bridges the gap between academic theory and industry practice. Learn from experts, build real projects, and join a community of doers."
+        },
+        "primary_button_text": {
+            "type": "string",
+            "default": "View Courses"
+        },
+        "primary_button_link": {
+            "type": "string",
+            "default": "/courses"
+        },
+        "secondary_button_text": {
+            "type": "string",
+            "default": "Join Community"
+        },
+        "secondary_button_link": {
+            "type": "string",
+            "default": "/community"
+        },
+        "badge_left_text": {
+            "type": "string",
+            "default": "Industry Certified"
+        },
+        "badge_right_text": {
+            "type": "string",
+            "default": "500+ Students"
+        },
+        "background_style": {
+            "type": "enumeration",
+            "enum": [
+                "globe_animation",
+                "static_image",
+                "gradient"
+            ],
+            "default": "globe_animation"
+        },
+        "hero_image": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        }
+    }
+}

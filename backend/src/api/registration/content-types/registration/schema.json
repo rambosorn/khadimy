@@ -1,0 +1,31 @@
+{
+    "kind": "collectionType",
+    "collectionName": "registrations",
+    "info": {
+        "singularName": "registration",
+        "pluralName": "registrations",
+        "displayName": "Registration",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "email": {
+            "type": "email"
+        },
+        "phone": {
+            "type": "string"
+        },
+        "interest": {
+            "type": "string"
+        },
+        "background": {
+            "type": "text"
+        }
+    }
+}
