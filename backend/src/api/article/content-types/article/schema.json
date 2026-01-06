@@ -42,6 +42,12 @@
             "allowedTypes": [
                 "images"
             ]
+        },
+        "topics": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::topic.topic",
+            "inversedBy": "articles"
         }
     }
 }

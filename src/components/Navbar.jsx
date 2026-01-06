@@ -2,10 +2,12 @@ import { Link } from 'react-router-dom';
 import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { useSiteIdentity } from '../hooks/useSiteIdentity';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { theme, toggleTheme } = useTheme();
+    const { logoUrl, altText, siteName } = useSiteIdentity();
 
     const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -13,7 +15,7 @@ const Navbar = () => {
         <nav className="navbar" style={{ borderBottom: '1px solid var(--color-border)', padding: '1rem 0', background: 'var(--color-surface)', position: 'sticky', top: 0, zIndex: 100 }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Link to="/" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-primary)', display: 'flex', alignItems: 'center' }}>
-                    <img src="/logo.png" alt="Khadimy Logo" style={{ height: '40px', objectFit: 'contain' }} />
+                    <img src={logoUrl} alt={altText || siteName} style={{ height: '40px', objectFit: 'contain' }} />
                 </Link>
 
                 {/* Desktop Menu */}

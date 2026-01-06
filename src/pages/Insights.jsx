@@ -6,24 +6,45 @@ import { fetchFromStrapi, unwrapStrapiResponse, getStrapiMedia } from '../lib/st
 
 const Insights = () => {
     const [articles, setArticles] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [activeCategory, setActiveCategory] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function loadArticles() {
+        async function loadData() {
             try {
+                setLoading(true);
+
+                // Fetch All Articles
+                // We fetch all to derive categories. In a larger app, you'd want a dedicated 'all categories' endpoint or proper pagination.
+                // For now, this meets the requirement of "auto based on category we create".
                 const data = await fetchFromStrapi('/articles', {
                     populate: '*',
-                    'sort[0]': 'publish_date:desc'
+                    'sort[0]': 'publish_date:desc',
+                    'pagination[limit]': 100 // Fetch reasonably large amount to get all categories
                 });
-                setArticles(unwrapStrapiResponse(data));
+
+                const allArticles = unwrapStrapiResponse(data) || [];
+                setArticles(allArticles);
+
+                // Derive Unique Categories
+                // Filter out null/undefined and get unique values
+                const uniqueCategories = [...new Set(allArticles.map(a => a.category).filter(Boolean))].sort();
+                setCategories(uniqueCategories);
+
             } catch (err) {
-                console.error("Failed to load articles", err);
+                console.error("Failed to load insights data", err);
             } finally {
                 setLoading(false);
             }
         }
-        loadArticles();
+        loadData();
     }, []);
+
+    // Filter Logic (Client-side)
+    const displayedArticles = activeCategory
+        ? articles.filter(article => article.category === activeCategory)
+        : articles;
 
     return (
         <>
@@ -40,12 +61,50 @@ const Insights = () => {
                     </p>
                 </div>
 
+                <div className="container" style={{ marginBottom: '2rem' }}>
+                    <div className="filter-scroll-container">
+                        <button
+                            onClick={() => setActiveCategory(null)}
+                            style={{
+                                padding: '0.5rem 1rem',
+                                borderRadius: '99px',
+                                border: '1px solid var(--color-border)',
+                                background: activeCategory === null ? 'var(--color-primary)' : 'var(--color-surface)',
+                                color: activeCategory === null ? 'white' : 'var(--color-text)',
+                                cursor: 'pointer',
+                                fontWeight: '500',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            All
+                        </button>
+                        {categories.map(category => (
+                            <button
+                                key={category}
+                                onClick={() => setActiveCategory(category)}
+                                style={{
+                                    padding: '0.5rem 1rem',
+                                    borderRadius: '99px',
+                                    border: '1px solid var(--color-border)',
+                                    background: activeCategory === category ? 'var(--color-primary)' : 'var(--color-surface)',
+                                    color: activeCategory === category ? 'white' : 'var(--color-text)',
+                                    cursor: 'pointer',
+                                    fontWeight: '500',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {category}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 <div className="container">
                     {loading ? (
                         <p>Loading insights...</p>
                     ) : (
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
-                            {articles.map(article => {
+                            {displayedArticles.map(article => {
                                 const imageUrl = article.cover ? getStrapiMedia(article.cover.url) : 'https://placehold.co/300x200';
 
                                 return (

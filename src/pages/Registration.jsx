@@ -80,13 +80,15 @@ const Registration = () => {
 
     if (status === 'success') {
         return (
-            <div className="section container" style={{ textAlign: 'center', padding: '5rem 0' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎉</div>
-                <h1 style={{ marginBottom: '1rem' }}>Thank You for Registering!</h1>
-                <p style={{ maxWidth: '600px', margin: '0 auto', color: '#666', fontSize: '1.2rem' }}>
-                    We have received your details. Our team will contact you shortly via email with the next steps and payment instructions.
-                </p>
-                <a href="/" className="btn btn-primary" style={{ marginTop: '2rem' }}>Return Home</a>
+            <div className="section" style={{ padding: '5rem 0' }}>
+                <div className="container" style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎉</div>
+                    <h1 style={{ marginBottom: '1rem' }}>Thank You for Registering!</h1>
+                    <p style={{ maxWidth: '600px', margin: '0 auto', color: '#666', fontSize: '1.2rem' }}>
+                        We have received your details. Our team will contact you shortly via email with the next steps and payment instructions.
+                    </p>
+                    <a href="/" className="btn btn-primary" style={{ marginTop: '2rem' }}>Return Home</a>
+                </div>
             </div>
         );
     }

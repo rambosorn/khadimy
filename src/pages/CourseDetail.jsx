@@ -38,7 +38,7 @@ const CourseDetail = () => {
     }, [slug]);
 
     if (loading) {
-        return <div className="container section">Loading course details...</div>;
+        return <div className="section"><div className="container">Loading course details...</div></div>;
     }
 
     if (error || !course) {
@@ -67,193 +67,209 @@ const CourseDetail = () => {
                     </div>
                 </div>
 
-                <div className="container section course-detail-layout">
+                <div className="section">
+                    <div className="container course-detail-layout">
 
-                    {/* Main Content */}
-                    <div className="course-content">
-                        <div style={{ marginBottom: '3rem' }}>
-                            <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem', color: 'var(--color-text)' }}>
-                                Course Description
-                            </h2>
-                            <p style={{ color: 'var(--color-text-light)', lineHeight: '1.7', fontSize: '1.05rem' }}>
-                                This course is designed for {course.audience}. Whether you are looking to upskill or switch careers, you will find practical value here.
-                            </p>
-                        </div>
-
-                        {course.outcomes && (
+                        {/* Main Content */}
+                        <div className="course-content">
                             <div style={{ marginBottom: '3rem' }}>
                                 <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem', color: 'var(--color-text)' }}>
-                                    What You Will Learn
+                                    Course Description
                                 </h2>
-                                <ul style={{ display: 'grid', gap: '1rem' }}>
-                                    {Array.isArray(course.outcomes) ? course.outcomes.map((outcome, index) => (
-                                        <li key={index} style={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
-                                            <CheckCircle size={20} color="var(--color-success)" style={{ marginTop: '4px', flexShrink: 0 }} />
-                                            <span style={{ fontSize: '1.05rem', color: 'var(--color-text)' }}>{outcome}</span>
-                                        </li>
-                                    )) : (
-                                        <li>Outcomes data format mismatch</li>
-                                    )}
-                                </ul>
+                                <p style={{ color: 'var(--color-text-light)', lineHeight: '1.7', fontSize: '1.05rem' }}>
+                                    This course is designed for {course.audience}. Whether you are looking to upskill or switch careers, you will find practical value here.
+                                </p>
                             </div>
-                        )}
 
-                        {course.instructor && (
-                            <div>
-                                <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem', color: 'var(--color-text)' }}>
-                                    Meet Your Instructor
-                                </h2>
-                                <div className="course-instructor-card">
-                                    <div style={{
-                                        width: '80px',
-                                        height: '80px',
-                                        borderRadius: '50%',
-                                        overflow: 'hidden',
-                                        flexShrink: 0,
-                                        background: 'var(--color-border)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    }}>
-                                        {course.instructor.photo ? (
-                                            <img
-                                                src={getStrapiMedia(course.instructor.photo.url)}
-                                                alt={course.instructor.name}
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            />
-                                        ) : (
-                                            <User size={40} color="var(--color-text-light)" />
-                                        )}
-                                    </div>
-                                    <div>
-                                        <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem', fontWeight: '700', color: 'var(--color-text)' }}>{course.instructor.name}</h3>
-                                        <div style={{ color: 'var(--color-primary)', fontSize: '0.9rem', marginBottom: '1rem', fontWeight: '500' }}>{course.instructor.role}</div>
-                                        <p style={{ color: 'var(--color-text-light)', fontSize: '0.95rem', marginBottom: '1.25rem', lineHeight: '1.6' }}>{course.instructor.bio}</p>
+                            {course.outcomes && (
+                                <div style={{ marginBottom: '3rem' }}>
+                                    <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem', color: 'var(--color-text)' }}>
+                                        What You Will Learn
+                                    </h2>
+                                    <ul style={{ display: 'grid', gap: '1rem' }}>
+                                        {(() => {
+                                            let items = [];
+                                            if (Array.isArray(course.outcomes)) {
+                                                items = course.outcomes;
+                                            } else if (typeof course.outcomes === 'string') {
+                                                // Handle rich text or plain text with newlines/bullets
+                                                items = course.outcomes.split('\n')
+                                                    .map(line => line.replace(/^-\s*/, '').trim()) // Remove leading bullets if present
+                                                    .filter(line => line.length > 0);
+                                            }
 
-                                        {/* Social Icons for Instructor */}
-                                        <div style={{ display: 'flex', gap: '0.75rem' }}>
-                                            {course.instructor.linkedin && (
-                                                <a href={course.instructor.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: '#0077b5' }}>
-                                                    <Linkedin size={18} />
-                                                </a>
-                                            )}
-                                            {course.instructor.facebook && (
-                                                <a href={course.instructor.facebook} target="_blank" rel="noopener noreferrer" style={{ color: '#1877F2' }}>
-                                                    <Facebook size={18} />
-                                                </a>
-                                            )}
-                                            {course.instructor.website && (
-                                                <a href={course.instructor.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-text-light)' }}>
-                                                    <Globe size={18} />
-                                                </a>
+                                            if (items.length > 0) {
+                                                return items.map((outcome, index) => (
+                                                    <li key={index} style={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
+                                                        <CheckCircle size={20} color="var(--color-success)" style={{ marginTop: '4px', flexShrink: 0 }} />
+                                                        <span style={{ fontSize: '1.05rem', color: 'var(--color-text)' }}>{outcome}</span>
+                                                    </li>
+                                                ));
+                                            } else {
+                                                return <li style={{ fontStyle: 'italic', color: 'var(--color-text-light)' }}>No outcomes listed.</li>;
+                                            }
+                                        })()}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {course.instructor && (
+                                <div>
+                                    <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem', color: 'var(--color-text)' }}>
+                                        Meet Your Instructor
+                                    </h2>
+                                    <div className="course-instructor-card">
+                                        <div style={{
+                                            width: '80px',
+                                            height: '80px',
+                                            borderRadius: '50%',
+                                            overflow: 'hidden',
+                                            flexShrink: 0,
+                                            background: 'var(--color-border)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            {course.instructor.photo ? (
+                                                <img
+                                                    src={getStrapiMedia(course.instructor.photo.url)}
+                                                    alt={course.instructor.name}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                />
+                                            ) : (
+                                                <User size={40} color="var(--color-text-light)" />
                                             )}
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        <div style={{ marginTop: '3rem', borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}>
-                            <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', fontWeight: '700', color: 'var(--color-text)' }}>Share this Course</h3>
-                            <ShareButtons
-                                url={window.location.href}
-                                title={course.title}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Sidebar */}
-                    <div className="course-sidebar">
-                        <div className="course-sidebar-sticky">
-                            {/* Sidebar Image */}
-                            <div style={{
-                                height: '200px',
-                                background: 'var(--color-bg-alt)',
-                                borderBottom: '1px solid var(--color-border)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                overflow: 'hidden'
-                            }}>
-                                {course.cover ? (
-                                    <img
-                                        src={getStrapiMedia(course.cover.url)}
-                                        alt={course.title}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                    />
-                                ) : (
-                                    <div style={{ textAlign: 'center', color: 'var(--color-text-light)' }}>
-                                        <Layers size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
-                                        <div>Course Preview</div>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div style={{ padding: '2rem' }}>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: '700', color: 'var(--color-text)' }}>Course Details</h3>
-
-                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                                    <Clock size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
-                                    <div>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Duration</div>
-                                        <div style={{ fontWeight: '600', color: 'var(--color-text)' }}>{course.duration}</div>
-                                    </div>
-                                </div>
-
-                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                                    <Globe size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
-                                    <div>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Format</div>
-                                        <div style={{ fontWeight: '600', color: 'var(--color-text)' }}>{course.mode}</div>
-                                    </div>
-                                </div>
-
-                                {course.schedule && (
-                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                                        <Calendar size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
                                         <div>
-                                            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Class Schedule</div>
-                                            <div style={{ fontWeight: '600', color: 'var(--color-text)' }}>{course.schedule}</div>
-                                        </div>
-                                    </div>
-                                )}
+                                            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem', fontWeight: '700', color: 'var(--color-text)' }}>{course.instructor.name}</h3>
+                                            <div style={{ color: 'var(--color-primary)', fontSize: '0.9rem', marginBottom: '1rem', fontWeight: '500' }}>{course.instructor.role}</div>
+                                            <p style={{ color: 'var(--color-text-light)', fontSize: '0.95rem', marginBottom: '1.25rem', lineHeight: '1.6' }}>{course.instructor.bio}</p>
 
-                                {course.tools && (
-                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                                        <Layers size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
-                                        <div>
-                                            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Tools Used</div>
-                                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
-                                                {Array.isArray(course.tools) && course.tools.map((tool, idx) => (
-                                                    <span key={idx} style={{
-                                                        background: 'var(--color-bg-alt)',
-                                                        padding: '0.2rem 0.6rem',
-                                                        borderRadius: '4px',
-                                                        fontSize: '0.75rem',
-                                                        color: 'var(--color-text)',
-                                                        fontWeight: '500'
-                                                    }}>
-                                                        {typeof tool === 'string' ? tool : tool.name}
-                                                    </span>
-                                                ))}
+                                            {/* Social Icons for Instructor */}
+                                            <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                                {course.instructor.linkedin && (
+                                                    <a href={course.instructor.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: '#0077b5' }}>
+                                                        <Linkedin size={18} />
+                                                    </a>
+                                                )}
+                                                {course.instructor.facebook && (
+                                                    <a href={course.instructor.facebook} target="_blank" rel="noopener noreferrer" style={{ color: '#1877F2' }}>
+                                                        <Facebook size={18} />
+                                                    </a>
+                                                )}
+                                                {course.instructor.website && (
+                                                    <a href={course.instructor.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-text-light)' }}>
+                                                        <Globe size={18} />
+                                                    </a>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                )}
+                                </div>
+                            )}
+                            <div style={{ marginTop: '3rem', borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', fontWeight: '700', color: 'var(--color-text)' }}>Share this Course</h3>
+                                <ShareButtons
+                                    url={window.location.href}
+                                    title={course.title}
+                                />
+                            </div>
+                        </div>
 
-                                <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
-                                    <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '1rem', color: 'var(--color-text)' }}>{course.price || 'Free'}</h2>
+                        {/* Sidebar */}
+                        <div className="course-sidebar">
+                            <div className="course-sidebar-sticky">
+                                {/* Sidebar Image */}
+                                <div style={{
+                                    height: '200px',
+                                    background: 'var(--color-bg-alt)',
+                                    borderBottom: '1px solid var(--color-border)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    overflow: 'hidden'
+                                }}>
+                                    {course.cover ? (
+                                        <img
+                                            src={getStrapiMedia(course.cover.url)}
+                                            alt={course.title}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        />
+                                    ) : (
+                                        <div style={{ textAlign: 'center', color: 'var(--color-text-light)' }}>
+                                            <Layers size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
+                                            <div>Course Preview</div>
+                                        </div>
+                                    )}
                                 </div>
 
-                                <Link to={`/register?course=${encodeURIComponent(course.title)}`} className="btn btn-primary" style={{ width: '100%', textAlign: 'center', justifyContent: 'center' }}>
-                                    Register for Course
-                                </Link>
-                                <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>
-                                    Limited seats available for next cohort.
+                                <div style={{ padding: '2rem' }}>
+                                    <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: '700', color: 'var(--color-text)' }}>Course Details</h3>
+
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+                                        <Clock size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
+                                        <div>
+                                            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Duration</div>
+                                            <div style={{ fontWeight: '600', color: 'var(--color-text)' }}>{course.duration}</div>
+                                        </div>
+                                    </div>
+
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+                                        <Globe size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
+                                        <div>
+                                            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Format</div>
+                                            <div style={{ fontWeight: '600', color: 'var(--color-text)' }}>{course.mode}</div>
+                                        </div>
+                                    </div>
+
+                                    {course.schedule && (
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+                                            <Calendar size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
+                                            <div>
+                                                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Class Schedule</div>
+                                                <div style={{ fontWeight: '600', color: 'var(--color-text)' }}>{course.schedule}</div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {course.tools && (
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+                                            <Layers size={20} className="text-muted-foreground" style={{ marginTop: '2px', color: 'var(--color-text-light)' }} />
+                                            <div>
+                                                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-light)', marginBottom: '2px' }}>Tools Used</div>
+                                                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
+                                                    {Array.isArray(course.tools) && course.tools.map((tool, idx) => (
+                                                        <span key={idx} style={{
+                                                            background: 'var(--color-bg-alt)',
+                                                            padding: '0.2rem 0.6rem',
+                                                            borderRadius: '4px',
+                                                            fontSize: '0.75rem',
+                                                            color: 'var(--color-text)',
+                                                            fontWeight: '500'
+                                                        }}>
+                                                            {typeof tool === 'string' ? tool : tool.name}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
+                                        <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '1rem', color: 'var(--color-text)' }}>{course.price || 'Free'}</h2>
+                                    </div>
+
+                                    <Link to={`/register?course=${encodeURIComponent(course.title)}`} className="btn btn-primary" style={{ width: '100%', textAlign: 'center', justifyContent: 'center' }}>
+                                        Register for Course
+                                    </Link>
+                                    <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>
+                                        Limited seats available for next cohort.
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
 

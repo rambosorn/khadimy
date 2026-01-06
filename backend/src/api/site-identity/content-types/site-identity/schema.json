@@ -1,0 +1,46 @@
+{
+    "kind": "singleType",
+    "collectionName": "site_identities",
+    "info": {
+        "singularName": "site-identity",
+        "pluralName": "site-identities",
+        "displayName": "Site Identity",
+        "description": "Manage global site settings like Logo and Name"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "site_name": {
+            "type": "string",
+            "default": "Khadimy"
+        },
+        "logo": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images",
+                "files",
+                "videos",
+                "audios"
+            ]
+        },
+        "alt_text": {
+            "type": "string",
+            "default": "Khadimy Logo"
+        },
+        "favicon": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images",
+                "files",
+                "videos",
+                "audios"
+            ]
+        }
+    }
+}

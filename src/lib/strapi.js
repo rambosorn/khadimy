@@ -30,6 +30,8 @@ export async function fetchFromStrapi(endpoint, params = {}) {
     const url = new URL(`${STRAPI_URL}/api${endpoint}`);
     buildQuery(params, url.searchParams);
 
+    console.log(`[Strapi] Fetching: ${url.toString()}`);
+
     try {
         const res = await fetch(url.toString(), {
             headers: {

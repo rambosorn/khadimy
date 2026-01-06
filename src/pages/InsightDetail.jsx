@@ -37,7 +37,7 @@ const InsightDetail = () => {
     }, [slug]);
 
     if (loading) {
-        return <div className="container section">Loading article...</div>;
+        return <div className="section"><div className="container">Loading article...</div></div>;
     }
 
     if (error || !article) {
@@ -81,32 +81,34 @@ const InsightDetail = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className="container session" style={{ maxWidth: '800px', padding: '3rem 1rem' }}>
-                    {imageUrl && (
-                        <img
-                            src={imageUrl}
-                            alt={article.title}
-                            style={{ width: '100%', borderRadius: 'var(--radius-lg)', marginBottom: '3rem', boxShadow: 'var(--shadow-md)' }}
-                        />
-                    )}
+                <div className="section" style={{ padding: '3rem 0' }}>
+                    <div className="container" style={{ maxWidth: '800px' }}>
+                        {imageUrl && (
+                            <img
+                                src={imageUrl}
+                                alt={article.title}
+                                style={{ width: '100%', borderRadius: 'var(--radius-lg)', marginBottom: '3rem', boxShadow: 'var(--shadow-md)' }}
+                            />
+                        )}
 
-                    <div className="article-content" style={{ fontSize: '1.1rem', lineHeight: '1.8', color: '#333' }}>
-                        {/* Rendering content. Strapi often sends markdown or blocks. 
+                        <div className="article-content" style={{ fontSize: '1.1rem', lineHeight: '1.8', color: '#333' }}>
+                            {/* Rendering content. Strapi often sends markdown or blocks. 
                             For this MVP, assuming it's rich text (markdown) or just text.
                             In a real app, use a markdown renderer (e.g. react-markdown).
                             Here, simply analyzing structure. If it's pure text, render it.
                         */}
-                        {article.content}
-                    </div>
-
-                    {article.external_link && (
-                        <div style={{ marginTop: '3rem', padding: '2rem', background: '#f8f9fa', borderRadius: 'var(--radius-md)', borderLeft: '4px solid var(--color-primary)' }}>
-                            <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Read Original Source</h3>
-                            <a href={article.external_link} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', fontWeight: '600' }}>
-                                Visit External Link &rarr;
-                            </a>
+                            {article.content}
                         </div>
-                    )}
+
+                        {article.external_link && (
+                            <div style={{ marginTop: '3rem', padding: '2rem', background: '#f8f9fa', borderRadius: 'var(--radius-md)', borderLeft: '4px solid var(--color-primary)' }}>
+                                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Read Original Source</h3>
+                                <a href={article.external_link} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', fontWeight: '600' }}>
+                                    Visit External Link &rarr;
+                                </a>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </article>
         </>

@@ -460,6 +460,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    topics: Schema.Attribute.Relation<'manyToMany', 'api::topic.topic'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -578,6 +579,46 @@ export interface ApiExpertExpert extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFooterFooter extends Struct.SingleTypeSchema {
+  collectionName: 'footers';
+  info: {
+    description: 'Content for the Site Footer';
+    displayName: 'Footer';
+    pluralName: 'footers';
+    singularName: 'footer';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    copyright_text: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'2026 Khadimy. All rights reserved.'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'Bridging the gap between academic theory and real industry practice.'>;
+    link_facebook: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'https://facebook.com'>;
+    link_github: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'https://github.com'>;
+    link_linkedin: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'https://linkedin.com'>;
+    link_website: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'https://khadimy.com'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::footer.footer'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHomeHeroHomeHero extends Struct.SingleTypeSchema {
   collectionName: 'home_heroes';
   info: {
@@ -625,6 +666,36 @@ export interface ApiHomeHeroHomeHero extends Struct.SingleTypeSchema {
       Schema.Attribute.DefaultTo<'Real-World Skills'>;
     title_main: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'From knowledge to'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPagePage extends Struct.CollectionTypeSchema {
+  collectionName: 'pages';
+  info: {
+    description: 'Dynamic pages for the website';
+    displayName: 'Page';
+    pluralName: 'pages';
+    singularName: 'page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    seo_description: Schema.Attribute.Text;
+    seo_title: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -689,6 +760,69 @@ export interface ApiRegistrationRegistration
     name: Schema.Attribute.String;
     phone: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSiteIdentitySiteIdentity extends Struct.SingleTypeSchema {
+  collectionName: 'site_identities';
+  info: {
+    description: 'Manage global site settings like Logo and Name';
+    displayName: 'Site Identity';
+    pluralName: 'site-identities';
+    singularName: 'site-identity';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    alt_text: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Khadimy Logo'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    favicon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::site-identity.site-identity'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    publishedAt: Schema.Attribute.DateTime;
+    site_name: Schema.Attribute.String & Schema.Attribute.DefaultTo<'Khadimy'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTopicTopic extends Struct.CollectionTypeSchema {
+  collectionName: 'topics';
+  info: {
+    description: 'Topics for categorizing articles';
+    displayName: 'Topic';
+    pluralName: 'topics';
+    singularName: 'topic';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    articles: Schema.Attribute.Relation<'manyToMany', 'api::article.article'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::topic.topic'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1209,9 +1343,13 @@ declare module '@strapi/strapi' {
       'api::course.course': ApiCourseCourse;
       'api::event.event': ApiEventEvent;
       'api::expert.expert': ApiExpertExpert;
+      'api::footer.footer': ApiFooterFooter;
       'api::home-hero.home-hero': ApiHomeHeroHomeHero;
+      'api::page.page': ApiPagePage;
       'api::partner.partner': ApiPartnerPartner;
       'api::registration.registration': ApiRegistrationRegistration;
+      'api::site-identity.site-identity': ApiSiteIdentitySiteIdentity;
+      'api::topic.topic': ApiTopicTopic;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

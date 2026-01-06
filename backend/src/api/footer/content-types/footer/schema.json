@@ -1,0 +1,40 @@
+{
+    "kind": "singleType",
+    "collectionName": "footers",
+    "info": {
+        "singularName": "footer",
+        "pluralName": "footers",
+        "displayName": "Footer",
+        "description": "Content for the Site Footer"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "description": {
+            "type": "text",
+            "default": "Bridging the gap between academic theory and real industry practice."
+        },
+        "copyright_text": {
+            "type": "string",
+            "default": "2026 Khadimy. All rights reserved."
+        },
+        "link_linkedin": {
+            "type": "string",
+            "default": "https://linkedin.com"
+        },
+        "link_facebook": {
+            "type": "string",
+            "default": "https://facebook.com"
+        },
+        "link_github": {
+            "type": "string",
+            "default": "https://github.com"
+        },
+        "link_website": {
+            "type": "string",
+            "default": "https://khadimy.com"
+        }
+    }
+}

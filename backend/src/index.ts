@@ -55,6 +55,12 @@ export default {
           'api::partner.partner.findOne',
           'api::event.event.find',
           'api::event.event.findOne',
+          'api::page.page.find',
+          'api::page.page.findOne',
+          'api::site-identity.site-identity.find',
+          'api::site-identity.site-identity.findOne',
+          'api::topic.topic.find',
+          'api::topic.topic.findOne',
         ];
 
         for (const action of actionsToEnable) {
@@ -117,6 +123,63 @@ export default {
 
         const countAfter = await strapi.db.query('api::home-hero.home-hero').count();
         log(`Home Hero count AFTER: ${countAfter}`);
+      }
+
+      // 3. Seed About Us Page if missing
+      const aboutPage = await strapi.db.query('api::page.page').findOne({
+        where: { slug: 'about-us' }
+      });
+
+      if (!aboutPage) {
+        log('Creating About Us Page...');
+        const now = new Date();
+        await strapi.db.query('api::page.page').create({
+          data: {
+            title: 'About Khadimy',
+            slug: 'about-us',
+            content: '# About Us\n\nKhadimy is a platform dedicated to bridging the gap between academic theory and real-world industry practice.\n\n## Our Mission\n\nTo empower learners with practical skills that matter.',
+            seo_title: 'About Us - Khadimy',
+            seo_description: 'Learn more about Khadimy and our mission.',
+            published_at: now,
+            publishedAt: now,
+          }
+        });
+        log('Created About Us Page.');
+      }
+
+      // 4. Seed Site Identity
+      const siteIdentityCount = await strapi.db.query('api::site-identity.site-identity').count();
+      if (siteIdentityCount === 0) {
+        log('Creating default Site Identity...');
+        const now = new Date();
+        await strapi.db.query('api::site-identity.site-identity').create({
+          data: {
+            site_name: 'Khadimy',
+            alt_text: 'Khadimy Logo',
+            published_at: now,
+            publishedAt: now,
+          }
+        });
+        log('Created default Site Identity.');
+      }
+
+      // 5. Seed Topics
+      const topicCount = await strapi.db.query('api::topic.topic').count();
+      if (topicCount === 0) {
+        log('Creating default Topics...');
+        const topics = ['Social Media', 'Email Marketing', 'SEO', 'Inbound Sales', 'Content Marketing'];
+        const now = new Date();
+        for (const name of topics) {
+          await strapi.db.query('api::topic.topic').create({
+            data: {
+              name,
+              slug: name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
+              published_at: now,
+              publishedAt: now,
+            }
+          });
+        }
+        log('Created default Topics.');
       }
 
       log('🚀 Bootstrap finish.');

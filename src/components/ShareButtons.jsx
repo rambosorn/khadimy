@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Facebook, Linkedin, Link2, Send, Instagram, Check } from 'lucide-react';
+import { Facebook, Linkedin, Link2, Send, Check } from 'lucide-react';
 
 const ShareButtons = ({ url, title }) => {
     const [copied, setCopied] = useState(false);
@@ -18,9 +18,9 @@ const ShareButtons = ({ url, title }) => {
             name: 'Copy Link',
             icon: copied ? <Check size={20} /> : <Link2 size={20} />,
             onClick: handleCopy,
-            color: '#666',
-            bg: 'white',
-            border: '1px solid #ddd'
+            color: 'var(--color-text)',
+            bg: 'var(--color-surface)',
+            border: '1px solid var(--color-border)'
         },
         {
             name: 'LinkedIn',
@@ -43,20 +43,13 @@ const ShareButtons = ({ url, title }) => {
             color: 'white',
             bg: '#0088cc'
         },
-        {
-            name: 'Instagram',
-            icon: <Instagram size={20} />,
-            onClick: handleCopy, // No web API, fallback to copy
-            color: 'white',
-            bg: '#e4405f',
-            title: 'Copy link for Instagram'
-        }
+
     ];
 
     return (
         <div style={{
-            background: 'white',
-            border: '1px solid #eee',
+            background: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
             borderRadius: '12px',
             padding: '1.5rem',
             marginTop: '2rem'
@@ -70,7 +63,7 @@ const ShareButtons = ({ url, title }) => {
                 fontWeight: '700',
                 letterSpacing: '1px',
                 textTransform: 'uppercase',
-                color: '#333'
+                color: 'var(--color-text)'
             }}>
                 <Share2Icon /> SHARE
             </div>

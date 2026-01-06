@@ -33,25 +33,35 @@ const Home = () => {
         }
 
         // Fetch Slideshow Courses
+        let slides = [];
         try {
           const slidesData = await fetchFromStrapi('/courses', {
             populate: ['cover', 'instructor', 'instructor.photo'],
             'filters[is_slideshow][$eq]': true,
             'pagination[limit]': 5
           });
-          setSlideshowCourses(unwrapStrapiResponse(slidesData));
+          slides = unwrapStrapiResponse(slidesData) || [];
+          setSlideshowCourses(slides);
         } catch (err) {
           console.warn("Slideshow fetch failed", err);
         }
 
-        // Fetch Featured Courses (excluding slideshow potentially? No, user said they can be separate)
+        // Fetch Featured Courses
+        // Filter out courses that are already in the slideshow (avoid duplicates)
         const coursesData = await fetchFromStrapi('/courses', {
           populate: ['cover', 'instructor', 'instructor.photo'],
           'filters[featured][$eq]': true,
-          'pagination[limit]': 6
+          'pagination[limit]': 10 // Fetch a bit more to account for filtering
         });
-        const courses = unwrapStrapiResponse(coursesData);
-        setFeaturedCourses(courses);
+        let courses = unwrapStrapiResponse(coursesData) || [];
+
+        if (slides.length > 0) {
+          const slideIds = slides.map(s => s.id);
+          courses = courses.filter(c => !slideIds.includes(c.id));
+        }
+
+        // Limit back to 6 after filtering
+        setFeaturedCourses(courses.slice(0, 6));
 
         // Fetch Latest Articles
         const articlesData = await fetchFromStrapi('/articles', {
@@ -309,9 +319,14 @@ const Home = () => {
 
       <div className="home-page">
         {/* Hero Section */}
-        {/* Hero Section */}
         {/* Hero Section: Switch between Carousel and Static */}
-        {slideshowCourses.length > 0 ? (
+        {loading ? (
+          // Placeholder to prevent layout shift/flash while determining if we have slides
+          <div style={{ height: '600px', background: '#0f0518', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="spinner" style={{ width: '50px', height: '50px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '50%', borderTopColor: '#3b82f6', animation: 'spin 1s linear infinite' }}></div>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          </div>
+        ) : slideshowCourses.length > 0 ? (
           <HeroCarousel slides={slideshowCourses} />
         ) : (
           <header className="hero section" style={{
@@ -705,7 +720,12 @@ const Home = () => {
         {/* Latest Insights */}
         < section className="section" style={{ background: 'var(--color-surface)' }}>
           <div className="container">
-            <h2 className="section-title">Latest Insights</h2>
+            <div className="section-header-flex" style={{ marginBottom: '2rem' }}>
+              <h2 className="section-title" style={{ marginBottom: 0 }}>Latest Insights</h2>
+              <Link to="/insights" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-primary)', fontWeight: '600' }}>
+                View All <ArrowRight size={18} />
+              </Link>
+            </div>
             {loading ? (
               <p>Loading insights...</p>
             ) : (
