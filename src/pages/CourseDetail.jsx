@@ -54,7 +54,7 @@ const CourseDetail = () => {
 
             <div className="course-detail-page">
                 {/* Header */}
-                <div style={{ background: 'var(--color-primary)', color: 'white', padding: '4rem 0' }}>
+                <div className="course-detail-header">
                     <div className="container">
                         <Link to="/courses" style={{ color: 'rgba(255,255,255,0.8)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem' }}>
                             <ArrowLeft size={20} /> Back to Courses
@@ -62,12 +62,12 @@ const CourseDetail = () => {
                         <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.9rem', marginBottom: '1rem', opacity: 0.9 }}>
                             {course.mode}
                         </span>
-                        <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', fontWeight: '800' }}>{course.title}</h1>
+                        <h1 className="course-detail-title">{course.title}</h1>
                         <p style={{ fontSize: '1.25rem', maxWidth: '800px', opacity: 0.9 }}>{course.overview}</p>
                     </div>
                 </div>
 
-                <div className="container section" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '4rem' }}>
+                <div className="container section course-detail-layout">
 
                     {/* Main Content */}
                     <div className="course-content">
@@ -103,15 +103,7 @@ const CourseDetail = () => {
                                 <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem', color: 'var(--color-text)' }}>
                                     Meet Your Instructor
                                 </h2>
-                                <div style={{
-                                    display: 'flex',
-                                    gap: '1.5rem',
-                                    alignItems: 'start',
-                                    background: 'var(--color-bg-alt)',
-                                    padding: '2rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid var(--color-border)'
-                                }}>
+                                <div className="course-instructor-card">
                                     <div style={{
                                         width: '80px',
                                         height: '80px',
@@ -171,15 +163,7 @@ const CourseDetail = () => {
 
                     {/* Sidebar */}
                     <div className="course-sidebar">
-                        <div style={{
-                            background: 'var(--color-surface)',
-                            border: '1px solid var(--color-border)',
-                            borderRadius: '16px',
-                            boxShadow: 'var(--shadow-lg)',
-                            position: 'sticky',
-                            top: '120px',
-                            overflow: 'hidden'
-                        }}>
+                        <div className="course-sidebar-sticky">
                             {/* Sidebar Image */}
                             <div style={{
                                 height: '200px',

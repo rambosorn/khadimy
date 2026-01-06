@@ -556,7 +556,7 @@ const Home = () => {
         {/* Featured Courses */}
         <section className="section" style={{ background: 'var(--color-bg-alt)' }}>
           <div className="container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
+            <div className="section-header-flex">
               <div>
                 <h2 className="section-title" style={{ marginBottom: '0.5rem', textAlign: 'left' }}>Featured Courses</h2>
                 <p>Start your journey with our most popular programs.</p>
