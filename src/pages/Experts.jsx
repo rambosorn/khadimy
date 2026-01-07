@@ -15,7 +15,7 @@ const Experts = () => {
                         photo: { fields: ['url', 'alternativeText'] },
                         skills: true
                     },
-                    fields: ['name', 'role', 'location', 'experience', 'linkedin', 'facebook', 'github', 'website', 'expertise']
+                    fields: ['name', 'role', 'location', 'experience', 'linkedin', 'facebook', 'github', 'website']
                 });
                 setExperts(unwrapStrapiResponse(data));
             } catch (err) {
