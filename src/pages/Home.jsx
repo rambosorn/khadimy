@@ -68,7 +68,7 @@ const Home = () => {
           populate: {
             cover: { fields: ['url', 'alternativeText'] }
           },
-          fields: ['title', 'slug', 'category', 'excerpt', 'description', 'createdAt'],
+          fields: ['title', 'slug', 'category', 'excerpt', 'createdAt'],
           sort: ['createdAt:desc'],
           pagination: { limit: 3 }
         });
