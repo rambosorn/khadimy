@@ -10,7 +10,13 @@ const Experts = () => {
     useEffect(() => {
         async function loadExperts() {
             try {
-                const data = await fetchFromStrapi('/experts', { populate: '*' });
+                const data = await fetchFromStrapi('/experts', {
+                    populate: {
+                        photo: { fields: ['url', 'alternativeText'] },
+                        skills: true
+                    },
+                    fields: ['name', 'role', 'location', 'experience', 'linkedin', 'facebook', 'github', 'website', 'expertise']
+                });
                 setExperts(unwrapStrapiResponse(data));
             } catch (err) {
                 console.error("Failed to load experts", err);

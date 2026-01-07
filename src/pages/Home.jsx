@@ -65,7 +65,10 @@ const Home = () => {
 
         // Fetch Latest Articles
         const articlesData = await fetchFromStrapi('/articles', {
-          populate: '*',
+          populate: {
+            cover: { fields: ['url', 'alternativeText'] }
+          },
+          fields: ['title', 'slug', 'category', 'excerpt', 'description', 'createdAt'],
           sort: ['createdAt:desc'],
           pagination: { limit: 3 }
         });
@@ -73,7 +76,12 @@ const Home = () => {
 
         // Fetch Partners
         try {
-          const partnersData = await fetchFromStrapi('/partners', { populate: '*' });
+          const partnersData = await fetchFromStrapi('/partners', {
+            populate: {
+              logo: { fields: ['url', 'alternativeText'] }
+            },
+            fields: ['name']
+          });
           setPartners(unwrapStrapiResponse(partnersData));
         } catch (err) {
           console.warn("Partners fetch failed, using placeholders", err);

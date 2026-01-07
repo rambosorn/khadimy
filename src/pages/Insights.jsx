@@ -19,7 +19,10 @@ const Insights = () => {
                 // We fetch all to derive categories. In a larger app, you'd want a dedicated 'all categories' endpoint or proper pagination.
                 // For now, this meets the requirement of "auto based on category we create".
                 const data = await fetchFromStrapi('/articles', {
-                    populate: '*',
+                    populate: {
+                        cover: { fields: ['url', 'alternativeText'] }
+                    },
+                    fields: ['title', 'slug', 'category', 'excerpt', 'publish_date'],
                     'sort[0]': 'publish_date:desc',
                     'pagination[limit]': 100 // Fetch reasonably large amount to get all categories
                 });
