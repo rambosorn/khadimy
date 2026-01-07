@@ -1,8 +1,8 @@
-export default [
+export default ({ env }) => [
   {
     name: "strapi::cors",
     config: {
-      origin: [
+      origin: env('CORS_ORIGINS') ? env('CORS_ORIGINS').split(',') : [
         "http://localhost:5173",
         "http://localhost:5174",
         "http://127.0.0.1:5173",
