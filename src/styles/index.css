@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
 :root {
   /* Colors */
@@ -30,7 +30,7 @@
   --color-badge-bg: rgba(0, 86, 179, 0.1);
 
   /* Typography */
-  --font-sans: 'Lexend', 'Kantumruy Pro', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Kantumruy Pro', sans-serif;
 
   /* Spacing */
   --spacing-xs: 0.5rem;
