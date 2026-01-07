@@ -86,13 +86,12 @@ export default {
       }
 
       // 2. Seed Home Hero if missing
-      const homeHeroCount = await strapi.db.query('api::home-hero.home-hero').count();
-      log(`Home Hero count BEFORE: ${homeHeroCount}`);
+      // 2. Seed Home Hero if missing or unpublished
+      const homeHero = await strapi.db.query('api::home-hero.home-hero').findOne({});
+      const now = new Date();
 
-      if (homeHeroCount === 0) {
+      if (!homeHero) {
         log('Creating Home Hero via strapi.db with explicit timestamps...');
-        const now = new Date();
-
         try {
           const newHero = await strapi.db.query('api::home-hero.home-hero').create({
             data: {
@@ -107,22 +106,28 @@ export default {
               badge_left_text: 'Industry Certified',
               badge_right_text: '500+ Students',
               background_style: 'globe_animation',
-              // Set BOTH cases to be sure for raw DB query
-              published_at: now,
               publishedAt: now,
-              created_at: now,
-              createdAt: now,
-              updated_at: now,
-              updatedAt: now,
             },
           });
           log(`Created Home Hero via DB. ID: ${newHero.id}`);
         } catch (dbErr) {
           log(`DB Create Error: ${dbErr.message}`);
         }
-
-        const countAfter = await strapi.db.query('api::home-hero.home-hero').count();
-        log(`Home Hero count AFTER: ${countAfter}`);
+      } else if (!homeHero.publishedAt) {
+        log(`Found Home Hero (ID: ${homeHero.id}) but it is UNPUBLISHED. Publishing now...`);
+        try {
+          await strapi.db.query('api::home-hero.home-hero').update({
+            where: { id: homeHero.id },
+            data: {
+              publishedAt: now,
+            }
+          });
+          log('Reference to Home Hero published.');
+        } catch (updateErr) {
+          log(`DB Update Error: ${updateErr.message}`);
+        }
+      } else {
+        log(`Home Hero exists and is published (ID: ${homeHero.id}).`);
       }
 
       // 3. Seed About Us Page if missing
