@@ -12,10 +12,9 @@ const Experts = () => {
             try {
                 const data = await fetchFromStrapi('/experts', {
                     populate: {
-                        photo: { fields: ['url', 'alternativeText'] },
-                        skills: true
+                        photo: { fields: ['url', 'alternativeText'] }
                     },
-                    fields: ['name', 'role', 'location', 'experience', 'linkedin', 'facebook', 'github', 'website']
+                    fields: ['name', 'role', 'location', 'experience', 'linkedin', 'facebook', 'github', 'website', 'skills']
                 });
                 setExperts(unwrapStrapiResponse(data));
             } catch (err) {
