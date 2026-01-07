@@ -5,7 +5,7 @@ export const useSiteIdentity = () => {
     const [identity, setIdentity] = useState({
         siteName: 'Khadimy',
         logoUrl: '/logo.png', // Default fallback
-        faviconUrl: '/vite.svg',
+        faviconUrl: '/logo.png',
         altText: 'Khadimy Logo',
         loading: true
     });
@@ -24,7 +24,7 @@ export const useSiteIdentity = () => {
                     setIdentity({
                         siteName: result.site_name || 'Khadimy',
                         logoUrl: result.logo ? getStrapiMedia(result.logo.url) : '/logo.png',
-                        faviconUrl: result.favicon ? getStrapiMedia(result.favicon.url) : '/vite.svg',
+                        faviconUrl: result.favicon ? getStrapiMedia(result.favicon.url) : '/logo.png',
                         altText: result.alt_text || 'Khadimy Logo',
                         loading: false
                     });
