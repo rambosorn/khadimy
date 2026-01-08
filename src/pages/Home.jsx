@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ArrowRight, BookOpen, Users, Award, Eye, Briefcase } from 'lucide-react';
+import * as LucideIcons from 'lucide-react'; // Import all icons
+import { ArrowRight, BookOpen, Users, Award, Eye, Briefcase } from 'lucide-react'; // Keep specific imports for fallbacks/statics if needed
 import { Link } from 'react-router-dom';
 import { fetchFromStrapi, unwrapStrapiResponse, getStrapiMedia } from '../lib/strapi';
 import { motion } from 'framer-motion';
@@ -26,7 +27,10 @@ const Home = () => {
       try {
         // Fetch Home Hero
         try {
-          const heroRes = await fetchFromStrapi('/home-hero');
+          // Populate features and hero_image
+          const heroRes = await fetchFromStrapi('/home-hero', {
+            populate: ['hero_image', 'features']
+          });
           setHeroData(unwrapStrapiResponse(heroRes));
         } catch (err) {
           console.warn("Home Hero fetch failed", err);
@@ -95,6 +99,9 @@ const Home = () => {
     }
     loadData();
   }, []);
+
+  // ... (rest of code)
+
 
   // Typewriter Effect Logic
   useEffect(() => {
@@ -546,9 +553,9 @@ const Home = () => {
         <section className="section" style={{ background: 'var(--color-surface)' }}>
           <div className="container">
             <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <h2 className="section-title">Why Khadimy?</h2>
+              <h2 className="section-title">{heroData?.features_title || "Why Khadimy?"}</h2>
               <p style={{ maxWidth: '600px', margin: '0 auto', color: '#666' }}>
-                We don't just teach theory. We prepare you for the workforce.
+                {heroData?.features_subtitle || "We don't just teach theory. We prepare you for the workforce."}
               </p>
             </div>
 
@@ -557,21 +564,39 @@ const Home = () => {
               gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
               gap: '2rem'
             }}>
-              <div style={{ padding: '2rem', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-lg)' }}>
-                <div style={{ color: 'var(--color-primary)', marginBottom: '1rem' }}><BookOpen size={40} /></div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Practical Curriculum</h3>
-                <p style={{ color: '#666' }}>Courses designed by industry experts, focusing on the tools and workflows used in real jobs today.</p>
-              </div>
-              <div style={{ padding: '2rem', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-lg)' }}>
-                <div style={{ color: 'var(--color-secondary)', marginBottom: '1rem' }}><Users size={40} /></div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Hybrid Learning</h3>
-                <p style={{ color: '#666' }}>The flexibility of online learning combined with physical workshops for networking and hands-on guidance.</p>
-              </div>
-              <div style={{ padding: '2rem', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-lg)' }}>
-                <div style={{ color: 'var(--color-accent)', marginBottom: '1rem' }}><Award size={40} /></div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Industry Connection</h3>
-                <p style={{ color: '#666' }}>Direct access to mentors and professionals who can guide your career path and provide feedback.</p>
-              </div>
+              {(heroData?.features && heroData.features.length > 0) ? (
+                heroData.features.map((feature, idx) => {
+                  const Icon = LucideIcons[feature.icon] || LucideIcons.BookOpen;
+                  const colors = ['var(--color-primary)', 'var(--color-secondary)', 'var(--color-accent)', 'var(--color-text)'];
+                  const color = colors[idx % colors.length];
+
+                  return (
+                    <div key={feature.id} style={{ padding: '2rem', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-lg)' }}>
+                      <div style={{ color: color, marginBottom: '1rem' }}><Icon size={40} /></div>
+                      <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>{feature.title}</h3>
+                      <p style={{ color: '#666' }}>{feature.description}</p>
+                    </div>
+                  );
+                })
+              ) : (
+                <>
+                  <div style={{ padding: '2rem', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-lg)' }}>
+                    <div style={{ color: 'var(--color-primary)', marginBottom: '1rem' }}><BookOpen size={40} /></div>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Practical Curriculum</h3>
+                    <p style={{ color: '#666' }}>Courses designed by industry experts, focusing on the tools and workflows used in real jobs today.</p>
+                  </div>
+                  <div style={{ padding: '2rem', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-lg)' }}>
+                    <div style={{ color: 'var(--color-secondary)', marginBottom: '1rem' }}><Users size={40} /></div>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Hybrid Learning</h3>
+                    <p style={{ color: '#666' }}>The flexibility of online learning combined with physical workshops for networking and hands-on guidance.</p>
+                  </div>
+                  <div style={{ padding: '2rem', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-lg)' }}>
+                    <div style={{ color: 'var(--color-accent)', marginBottom: '1rem' }}><Award size={40} /></div>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Industry Connection</h3>
+                    <p style={{ color: '#666' }}>Direct access to mentors and professionals who can guide your career path and provide feedback.</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </section>
@@ -635,8 +660,10 @@ const Home = () => {
                           </Link>
                         </h3>
 
-                        <div className="course-subtitle" style={{ marginBottom: '1rem' }}>
-                          {course.mode || 'Professional Certificate'}
+                        <div className="course-subtitle" style={{ marginBottom: '1rem', color: '#666', fontSize: '0.9rem', lineHeight: '1.4' }}>
+                          {(course.overview || '').length > 80
+                            ? (course.overview || '').substring(0, 80) + '...'
+                            : (course.overview || 'No description available')}
                         </div>
                       </div>
                     </div>
@@ -669,7 +696,8 @@ const Home = () => {
               fontWeight: '500',
               marginBottom: '3rem',
             }}>
-              More than <span style={{ color: 'var(--color-text)', fontWeight: 'bold' }}>500+ students</span> and <span style={{ color: 'var(--color-text)', fontWeight: 'bold' }}>50+ partners</span> grow with Khadimy.
+              {heroData?.partners_title ||
+                <>More than <span style={{ color: 'var(--color-text)', fontWeight: 'bold' }}>500+ students</span> and <span style={{ color: 'var(--color-text)', fontWeight: 'bold' }}>50+ partners</span> grow with Khadimy.</>}
             </p>
 
             <div className="slider-track">

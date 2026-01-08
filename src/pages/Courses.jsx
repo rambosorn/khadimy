@@ -151,8 +151,10 @@ const Courses = () => {
                                                 </Link>
                                             </h3>
 
-                                            <div className="course-subtitle" style={{ marginBottom: '1rem' }}>
-                                                {course.mode || 'Professional Certificate'}
+                                            <div className="course-subtitle" style={{ marginBottom: '1rem', color: '#666', fontSize: '0.9rem', lineHeight: '1.4' }}>
+                                                {(course.overview || '').length > 80
+                                                    ? (course.overview || '').substring(0, 80) + '...'
+                                                    : (course.overview || 'No description available')}
                                             </div>
                                         </div>
                                     </div>

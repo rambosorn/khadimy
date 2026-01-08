@@ -57,10 +57,12 @@ export default {
           'api::event.event.findOne',
           'api::page.page.find',
           'api::page.page.findOne',
+          'api::footer.footer.find', // Added Footer permission
           'api::site-identity.site-identity.find',
           'api::site-identity.site-identity.findOne',
           'api::topic.topic.find',
           'api::topic.topic.findOne',
+          'api::footer.footer.find', // Added footer permission
         ];
 
         for (const action of actionsToEnable) {
@@ -91,9 +93,9 @@ export default {
       const now = new Date();
 
       if (!homeHero) {
-        log('Creating Home Hero via strapi.db with explicit timestamps...');
+        log('Creating Home Hero via entityService (supports components)...');
         try {
-          const newHero = await strapi.db.query('api::home-hero.home-hero').create({
+          const newHero = await strapi.entityService.create('api::home-hero.home-hero', {
             data: {
               cohort_text: '🚀 New Cohorts Starting January 2026',
               title_main: 'From knowledge to',
@@ -107,9 +109,26 @@ export default {
               badge_right_text: '500+ Students',
               background_style: 'globe_animation',
               publishedAt: now,
+              features: [
+                {
+                  title: 'Practical Curriculum',
+                  description: 'Courses designed by industry experts, focusing on the tools and workflows used in real jobs today.',
+                  icon: 'BookOpen'
+                },
+                {
+                  title: 'Hybrid Learning',
+                  description: 'The flexibility of online learning combined with physical workshops for networking and hands-on guidance.',
+                  icon: 'Users'
+                },
+                {
+                  title: 'Industry Connection',
+                  description: 'Direct access to mentors and professionals who can guide your career path and provide feedback.',
+                  icon: 'Award'
+                }
+              ]
             },
           });
-          log(`Created Home Hero via DB. ID: ${newHero.id}`);
+          log(`Created Home Hero via Entity Service. ID: ${newHero.id}`);
         } catch (dbErr) {
           log(`DB Create Error: ${dbErr.message}`);
         }
@@ -168,7 +187,27 @@ export default {
         log('Created default Site Identity.');
       }
 
-      // 5. Seed Topics
+      // 5. Seed Footer
+      const footerCount = await strapi.db.query('api::footer.footer').count();
+      if (footerCount === 0) {
+        log('Creating default Footer...');
+        const now = new Date();
+        await strapi.db.query('api::footer.footer').create({
+          data: {
+            description: 'Hello world, Bridging the gap between academic theory and real industry practice.',
+            copyright_text: '2026 Khadimy. All rights reserved.',
+            link_linkedin: 'https://linkedin.com',
+            link_twitter: 'https://twitter.com',
+            link_facebook: 'https://facebook.com',
+            link_instagram: 'https://instagram.com',
+            published_at: now,
+            publishedAt: now,
+          }
+        });
+        log('Created default Footer.');
+      }
+
+      // 6. Seed Topics
       const topicCount = await strapi.db.query('api::topic.topic').count();
       if (topicCount === 0) {
         log('Creating default Topics...');

@@ -646,6 +646,11 @@ export interface ApiHomeHeroHomeHero extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     description: Schema.Attribute.Text &
       Schema.Attribute.DefaultTo<'Khadimy bridges the gap between academic theory and industry practice. Learn from experts, build real projects, and join a community of doers.'>;
+    features: Schema.Attribute.Component<'page-elements.feature', true>;
+    features_subtitle: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<"We don't just teach theory. We prepare you for the workforce.">;
+    features_title: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Why Khadimy?'>;
     hero_image: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -653,6 +658,8 @@ export interface ApiHomeHeroHomeHero extends Struct.SingleTypeSchema {
       'api::home-hero.home-hero'
     > &
       Schema.Attribute.Private;
+    partners_title: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'More than 500+ students and 50+ partners grow with Khadimy.'>;
     primary_button_link: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'/courses'>;
     primary_button_text: Schema.Attribute.String &

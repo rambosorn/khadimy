@@ -68,6 +68,23 @@
             "allowedTypes": [
                 "images"
             ]
+        },
+        "partners_title": {
+            "type": "string",
+            "default": "More than 500+ students and 50+ partners grow with Khadimy."
+        },
+        "features_title": {
+            "type": "string",
+            "default": "Why Khadimy?"
+        },
+        "features_subtitle": {
+            "type": "text",
+            "default": "We don't just teach theory. We prepare you for the workforce."
+        },
+        "features": {
+            "type": "component",
+            "repeatable": true,
+            "component": "page-elements.feature"
         }
     }
 }

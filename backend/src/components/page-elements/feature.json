@@ -1,0 +1,22 @@
+{
+    "collectionName": "components_page_elements_features",
+    "info": {
+        "displayName": "Feature",
+        "icon": "star"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "text",
+            "required": true
+        },
+        "icon": {
+            "type": "string",
+            "default": "BookOpen"
+        }
+    }
+}
